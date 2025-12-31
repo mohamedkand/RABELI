@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I Love You Quiz - RABELI</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      width: 100vw;
+      background: #121212;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 50px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      width: 100%;
+    }
+
+    .love-link {
+      font-size: 4rem;
+      color: #ff66b2;
+      text-decoration: none;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .love-link:hover {
+      transform: scale(1.1);
+    }
+
+    #startQuiz {
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+      background: #ff66b2;
+      border: none;
+      border-radius: 10px;
+      color: #121212;
+      cursor: pointer;
+      margin-bottom: 2rem;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    #startQuiz:hover {
+      background: #ff3399;
+      transform: scale(1.1);
+    }
+
+    .quiz-area {
+      color: #eee;
+      display: none; /* hidden until start quiz */
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    #questionText {
+      margin-bottom: 30px;
+      font-size: 1.5rem;
+    }
+
+    #yesBtn, #noBtn {
+      padding: 0.8rem 1.5rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      background: #ff66b2;
+      color: #121212;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+      position: relative; /* start below the question */
+      margin: 10px;
+    }
+
+    #yesBtn:hover, #noBtn:hover {
+      background: #ff3399;
+      transform: scale(1.1);
+    }
+
+    /* Container for buttons */
+    .quiz-buttons {
+      position: relative; /* allows No button to move randomly */
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: 100px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- I LOVE YOU clickable text -->
+    <a href="iloveyou.html" class="love-link" target="_blank">I LOVE YOU</a>
+
+    <!-- Start Quiz button -->
+    <button id="startQuiz">Start Quiz</button>
+
+    <!-- Quiz area -->
+    <div class="quiz-area">
+      <p id="questionText"></p>
+      <div class="quiz-buttons">
+        <button id="yesBtn">Yes</button>
+        <button id="noBtn">No</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      "Do you know how much you’re loved?",
+      "Do you realize how special you are to me?",
+      "Do you know how easily you make me smile?",
+      "Do you know you’re my favorite person",
+      "Are you aware of the effect you have on me?",
+      "Do you know how safe I feel with you?",
+      "Do you realize how much I appreciate you?",
+      "Do you know you make ordinary days better?",
+      "Also… can I borrow $50?",
+      "Okay, I have no more questions. But please know you are deeply loved! 💕",
+    ];
+
+    let currentQuestion = 0;
+
+    const startButton = document.getElementById('startQuiz');
+    const quizArea = document.querySelector('.quiz-area');
+    const questionText = document.getElementById('questionText');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const body = document.body;
+
+    function showQuestion() {
+      if (currentQuestion < questions.length) {
+        questionText.textContent = questions[currentQuestion];
+      } else {
+        questionText.textContent = "Thanks for playing the RABELI quiz! 💕";
+        yesBtn.style.display = 'none';
+        // No button stays visible
+      }
+    }
+
+    // Start quiz
+    startButton.addEventListener('click', () => {
+      startButton.style.display = 'none';
+      quizArea.style.display = 'block';
+      showQuestion();
+    });
+
+    // Yes button → next question
+    yesBtn.addEventListener('click', () => {
+      currentQuestion++;
+      showQuestion();
+    });
+
+    // No button → move randomly anywhere in the viewport
+    noBtn.addEventListener('click', moveNoButton);
+noBtn.addEventListener('mouseover', moveNoButton); // Optional: makes it even harder to click!
+
+function moveNoButton(e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
+
+  const maxX = window.innerWidth - btnWidth;
+  const maxY = window.innerHeight - btnHeight;
+
+  const randomX = Math.max(0, Math.floor(Math.random() * maxX));
+  const randomY = Math.max(0, Math.floor(Math.random() * maxY));
+
+  noBtn.style.position = 'fixed';  // ← KEY CHANGE: "fixed" instead of "absolute"
+  noBtn.style.left = randomX + 'px';
+  noBtn.style.top = randomY + 'px';
+  noBtn.style.zIndex = '1000';     // ensures it stays on top of everything
+}
+  </script>
+
+</body>
+</html>
